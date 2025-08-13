@@ -47,15 +47,26 @@ void removeCel(LDE *list, int value){
     Cel *atual = list->firstElement;
     Cel *anterior = NULL;
 
-    while(atual != NULL){
-        if(atual->value == value){
-            anterior = atual->ptrNextCel;
-            free(atual);
-            break;
-        }
+    while(atual != NULL && atual->value != value){
         anterior = atual;
         atual = atual->ptrNextCel;
     }
+    //andou a lista toda e não encontrou o value
+    if(atual == NULL){
+        printf("Não encontrei o target");
+        return;
+    }
+    //quer remover o primeiro da lista
+    if(anterior == NULL){
+        printf("remover o primeiro da lista");
+        list->firstElement = atual->ptrNextCel;
+    //achou o value    
+    }else{
+        printf("achei o target");
+        anterior->ptrNextCel = atual->ptrNextCel;
+    }
+    free(atual);
+    list->elementsNumber--;
 }
 
 void printList(LDE *list){
@@ -71,13 +82,13 @@ void printList(LDE *list){
 int main(){
 
     LDE *list = create_list();
-    int i = 9;
-    for(i = 9; i >= 0; i--){
+    
+    for(int i = 2; i >= 0; i--){
         insert(list, i);
         printList(list);
 
     }
-    removeCel(list, 8);
+    removeCel(list, 0);
     printList(list);
     return 0;
 }
